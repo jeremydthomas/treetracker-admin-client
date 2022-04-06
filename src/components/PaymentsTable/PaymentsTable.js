@@ -10,12 +10,9 @@ import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import paymentsAPI from '../../api/earnings';
 import CustomTable from '../common/CustomTable/CustomTable';
-import {
-  covertDateStringToHumanReadableFormat,
-  generateActiveDateRangeFilterString,
-} from 'utilities';
 import CustomTableFilter from 'components/common/CustomTableFilter/CustomTableFilter';
 import CustomTableItemDetails from 'components/common/CustomTableItemDetails/CustomTableItemDetails';
+import { getDateStringLocale, getDateFormatLocale } from 'common/locale';
 
 /**
  * @constant
@@ -92,16 +89,14 @@ const prepareRows = (rows) =>
       ...row,
       csv_start_date: row.consolidation_period_start,
       csv_end_date: row.consolidation_period_end,
-      consolidation_period_start: covertDateStringToHumanReadableFormat(
-        row.consolidation_period_start,
-        'mmm d, yyyy'
+      consolidation_period_start: getDateStringLocale(
+        row.consolidation_period_start
       ),
-      consolidation_period_end: covertDateStringToHumanReadableFormat(
-        row.consolidation_period_end,
-        'mmm d, yyyy'
+      consolidation_period_end: getDateStringLocale(
+        row.consolidation_period_end
       ),
-      calculated_at: covertDateStringToHumanReadableFormat(row.calculated_at),
-      paid_at: covertDateStringToHumanReadableFormat(row.paid_at),
+      calculated_at: getDateStringLocale(row.calculated_at),
+      paid_at: getDateStringLocale(row.paid_at),
     };
   });
 
@@ -179,7 +174,7 @@ function PaymentsTable() {
 
   useEffect(() => {
     if (filter?.start_date && filter?.end_date) {
-      const dateRangeString = generateActiveDateRangeFilterString(
+      const dateRangeString = getDateFormatLocale(
         filter?.start_date,
         filter?.end_date
       );
